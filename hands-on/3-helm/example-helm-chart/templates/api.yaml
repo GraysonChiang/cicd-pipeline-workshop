@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: python
-        image: python:latest
+        image: registry.srcmesh.dev/workshop/grayson:0.0.1
         env:
         - name: REDIS_HOST
           value: redis-svc
@@ -22,6 +22,20 @@ spec:
           value: "6379"
         ports:
         - containerPort: 5000
+---
+
+apiVersion: v1
+data:
+  .dockerconfigjson: eyJhdXRocyI6eyJyZWdpc3RyeS5zcmNtZXNoLmRldiI6eyJ1c2VybmFtZSI6InJvYm90X3JvYm90X3dvcmtzaG9wIiwicGFzc3dvcmQiOiJYWVBqUmhUSWRBV0xlRUMwd0lVc0o3YVA2bWlpN1dBbSIsImF1dGgiOiJjbTlpYjNSZmNtOWliM1JmZDI5eWEzTm9iM0E2V0ZsUWFsSm9WRWxrUVZkTVpVVkRNSGRKVlhOS04yRlFObTFwYVRkWFFXMD0ifX19
+kind: Secret
+metadata:
+  creationTimestamp: "2023-10-21T07:11:08Z"
+  name: grayson-sm
+  namespace: user-16
+  resourceVersion: "4969565"
+  uid: d90345bd-1e5b-4ff9-8457-014fa3c8a7dd
+type: kubernetes.io/dockerconfigjson
+
 ---
 apiVersion: v1
 kind: Service
