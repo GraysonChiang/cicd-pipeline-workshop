@@ -1,2 +1,15 @@
 nginx:
   image: nginx:latest
+  pullPpolicy: IfNotPresent
+  port: 80
+
+redis:
+  image: redis:latest
+  pullPpolicy: IfNotPresent
+  port: 6379
+
+api:
+  image: registry.srcmesh.dev/workshop/grayson:0.0.1
+  pullPpolicy: IfNotPresent
+  port: 5000
+  

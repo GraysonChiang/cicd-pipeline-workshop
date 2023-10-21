@@ -14,14 +14,15 @@ spec:
     spec:
       containers:
       - name: python
-        image: registry.srcmesh.dev/workshop/grayson:0.0.1
+        image: {{ .Values.api.image }}
+        imagePullPolicy: {{ .Values.api.pullPpolicy  | default "IfNotPresent" }}
         env:
         - name: REDIS_HOST
           value: redis-svc
         - name: REDIS_PORT
-          value: "6379"
+          value: {{ .Values.api.port }}
         ports:
-        - containerPort: 5000
+        - containerPort: {{ .Values.api.port }}
       imagePullSecrets:
         - name: grayson-sm
 
@@ -44,6 +45,6 @@ spec:
   selector:
     app: python
   ports:
-  - port: 5000
-    targetPort: 5000
+  - port: {{ .Values.api.port }}
+    targetPort: {{ .Values.api.port }}
   type: ClusterIP
