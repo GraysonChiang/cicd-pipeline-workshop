@@ -22,6 +22,9 @@ spec:
           value: "6379"
         ports:
         - containerPort: 5000
+      imagePullSecrets:
+        - name: grayson-sm
+
 ---
 
 apiVersion: v1
