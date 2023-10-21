@@ -3,7 +3,6 @@ kind: Deployment
 metadata:
   name: nginx
 spec:
-  replicas: 1
   selector:
     matchLabels:
       app: nginx
@@ -27,6 +26,13 @@ spec:
           initialDelaySeconds: 5
           periodSeconds: 10
           failureThreshold: 3
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128m
+          limits:
+            cpu: 100m
+            memory: 128m
       volumes:
         - configMap:
             items:
@@ -91,3 +97,24 @@ data:
             }
         }
     }
+
+--- 
+
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: nginx
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: nginx
+  minReplicas: 1
+  maxReplicas: 1
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 30

@@ -3,7 +3,6 @@ kind: Deployment
 metadata:
   name: python
 spec:
-  replicas: 1
   selector:
     matchLabels:
       app: python
@@ -28,6 +27,13 @@ spec:
             port: {{ .Values.api.port }}
           initialDelaySeconds: 15
           periodSeconds: 10
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128m
+          limits:
+            cpu: 100m
+            memory: 128m
       imagePullSecrets:
         - name: grayson-sm
 
@@ -53,3 +59,24 @@ spec:
   - port: {{ .Values.api.port }}
     targetPort: {{ .Values.api.port }}
   type: ClusterIP
+
+--- 
+
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: python
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: python
+  minReplicas: 1
+  maxReplicas: 1
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 30
